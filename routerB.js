@@ -21,7 +21,12 @@ function matchRoute(pattern, pathname) {
 
 export default function router(req, res) {
   const { pathname, searchParams } = new URL(req.url, "http://localhost");
-  console.log({ pathname, searchParams, url: req.url, newURL: new URL(req.url, "http://localhost") });
+  console.log({
+    pathname,
+    searchParams,
+    url: req.url,
+    newURL: new URL(req.url, "http://localhost"),
+  });
   for (const route of routes) {
     if (route.method !== req.method) continue;
     const params = matchRoute(route.pattern, pathname);

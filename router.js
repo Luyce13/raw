@@ -1,4 +1,4 @@
-import * as c from "./controller.js"
+import * as c from "./controller.js";
 export default function router(req, res) {
   const { url, method } = req;
   console.log({ url, method });
