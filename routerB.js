@@ -2,25 +2,8 @@ import { URL } from "url";
 import routes from "./routes.js";
 import { notFound } from "./controller.js";
 
-function matchRoute(pattern, pathname) {
-  const patternParts = pattern.split("/");
-  const pathParts = pathname.split("/");
-
-  if (patternParts.length !== pathParts.length) return null;
-
-  const params = {};
-  for (let i = 0; i < patternParts.length; i++) {
-    if (patternParts[i].startsWith(":")) {
-      params[patternParts[i].slice(1)] = pathParts[i]; // e.g. :id → { id: "123" }
-    } else if (patternParts[i] !== pathParts[i]) {
-      return null; // static segment mismatch
-    }
-  }
-  return params;
-}
-
 export default function router(req, res) {
-  const { pathname, searchParams } = new URL(req.url, "http://localhost");
+  const { pathname, searchParams } = new URL(req.url, process.env.DOMAIN);
   console.log({
     pathname,
     searchParams,
@@ -37,4 +20,20 @@ export default function router(req, res) {
     }
   }
   return notFound(req, res);
+}
+function matchRoute(pattern, pathname) {
+  const patternParts = pattern.split("/");
+  const pathParts = pathname.split("/");
+
+  if (patternParts.length !== pathParts.length) return null;
+
+  const params = {};
+  for (let i = 0; i < patternParts.length; i++) {
+    if (patternParts[i].startsWith(":")) {
+      params[patternParts[i].slice(1)] = pathParts[i]; // e.g. :id → { id: "123" }
+    } else if (patternParts[i] !== pathParts[i]) {
+      return null; // static segment mismatch
+    }
+  }
+  return params;
 }
